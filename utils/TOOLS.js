@@ -1,0 +1,1 @@
+//this will contain usefull funtions as needed

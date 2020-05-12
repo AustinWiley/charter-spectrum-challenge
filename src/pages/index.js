@@ -4,6 +4,8 @@ import React, {
 import API from '../utils/API';
 import TOOLS from '../utils/TOOLS';
 import Table from '../components/Table';
+import SearchInput from '../components/SearchInput';
+import SearchSelector from '../components/SearchSelect';
 
 class RestaurantSearch extends Component {
   //set initial state
@@ -11,14 +13,74 @@ class RestaurantSearch extends Component {
     data: [],
     filteredData: [],
     pages: 0,
-    pageIndex: 0
+    pageIndex: 0,
+    states: ['All States', 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY' ],
+    genres: [],
+    searchActive: true,
+    searchName: "",
+    stateActive: true,
+    stateName: "All States",
+    genreActive: true,
+    genreName: "All Genres",
   }
 
+      //handle input change
+      handleInputChange = event => {
+        event.preventDefault()
+        const { name, value } = event.target;
+        this.setState({
+          [name]: value,
+          pageIndex: 0
+        }, function () {
+            this.filterData();
+          });
+      };
 
-
+      //handle checkbox change
+      handleCheckboxChange = event => {
+        const { name, checked } = event.target;
+        console.log(event.target.checked)
+        this.setState({
+          [name]: checked,
+          pageIndex: 0
+        }, function () {
+            console.log(this.state);
+            this.filterData();
+          });
+      };
 
   //handle input change
+  handleInputChange = event => {
+    event.preventDefault()
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value,
+      pageIndex: 0
+    }, function () {
+        this.filterData();
+      });
+  };
+
   //filter the data based on user inputs
+  filterData() {
+    console.log('filtering Data!!!')
+    let data = this.state.data
+    console.log(data)
+    console.log(this.state)
+
+    if (this.state.stateActive && this.state.stateName !== "All States") {
+      //filter by state
+    }
+    if (this.state.genreActive && this.state.genreName !== "All Genres") {
+      //filter by genre
+    }
+    if (this.state.searchActive && this.state.searchName !== "") {
+      //filter by user input
+    }
+    //chunk data in groups of 10 and set state
+    this.chunkData(data)
+  }
+
   //go to the next slide
   nextSlide = event => {
     console.log("Next stlide")
@@ -64,18 +126,16 @@ class RestaurantSearch extends Component {
 
   //once component did mound make API call and set state with response in alphabetical order
   componentDidMount() {
-    console.log('making API call')
     API.search()
       .then(res => {
         console.log(res);
-        const sortedData = res.data.sort(function (a, b) {
+        const genres = TOOLS.getGenres(res.data)
+        const sortedData = res.data.sort( function(a, b) {
           a = a.name.toLowerCase();
           b = b.name.toLowerCase();
           return a < b ? -1 : a > b ? 1 : 0;
         });
-        this.setState({
-          data: sortedData
-        }, this.chunkData(sortedData))
+        this.setState({ data: sortedData, genres: genres }, this.chunkData(sortedData))
       })
       .catch(err => console.log(err));
   }
@@ -85,6 +145,38 @@ class RestaurantSearch extends Component {
       <div>
       <h1>Search Restaurants</h1>
       {/* make seach input fields */}
+      <div className='searchGroup'>
+        <SearchInput
+                        title={'Search: '}
+                        checkboxName={'searchActive'}
+                        checkboxValue={this.state.searchActive}
+                        name={'searchName'}
+                        value={this.state.searchName}
+                        placeholder={'(Name, City or Genre)'}
+                        onChange={this.handleInputChange}
+                        onCheckbox={this.handleCheckboxChange}
+        />
+        <SearchSelector
+                        title={'State: '}
+                        checkboxName={'stateActive'}
+                        checkboxValue={this.state.stateActive}
+                        name={'stateName'}
+                        value={this.state.stateName}
+                        onChange={this.handleInputChange}
+                        onCheckbox={this.handleCheckboxChange}
+                        options={this.state.states}
+        />
+        <SearchSelector
+                        title={'Genre: '}
+                        checkboxName={'genreActive'}
+                        checkboxValue={this.state.genreActive}
+                        name={'genreName'}
+                        value={this.state.genreName}
+                        onChange={this.handleInputChange}
+                        onCheckbox={this.handleCheckboxChange}
+                        options={this.state.genres}
+        />
+        </div>
       {/* make pagination buttons */}
       <div>
         <a onClick={this.prevSlide}>&#10094;</a>

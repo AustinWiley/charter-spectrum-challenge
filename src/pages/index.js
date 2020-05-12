@@ -15,7 +15,7 @@ class RestaurantSearch extends Component {
     filteredData: [],
     pages: 0,
     pageIndex: 0,
-    states: ['All States', 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY' ],
+    states: ['All States', 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY'],
     genres: [],
     searchActive: true,
     searchName: "",
@@ -25,50 +25,38 @@ class RestaurantSearch extends Component {
     genreName: "All Genres",
   }
 
-      //handle input change
-      handleInputChange = event => {
-        event.preventDefault()
-        const { name, value } = event.target;
-        this.setState({
-          [name]: value,
-          pageIndex: 0
-        }, function () {
-            this.filterData();
-          });
-      };
-
-      //handle checkbox change
-      handleCheckboxChange = event => {
-        const { name, checked } = event.target;
-        console.log(event.target.checked)
-        this.setState({
-          [name]: checked,
-          pageIndex: 0
-        }, function () {
-            console.log(this.state);
-            this.filterData();
-          });
-      };
-
   //handle input change
   handleInputChange = event => {
     event.preventDefault()
-    const { name, value } = event.target;
+    const {
+      name,
+      value
+    } = event.target;
     this.setState({
       [name]: value,
       pageIndex: 0
     }, function () {
-        this.filterData();
-      });
+      this.filterData();
+    });
+  };
+
+  //handle checkbox change
+  handleCheckboxChange = event => {
+    const {
+      name,
+      checked
+    } = event.target;
+    this.setState({
+      [name]: checked,
+      pageIndex: 0
+    }, function () {
+      this.filterData();
+    });
   };
 
   //filter the data based on user inputs
   filterData() {
-    console.log('filtering Data!!!')
     let data = this.state.data
-    console.log(data)
-    console.log(this.state)
-
     if (this.state.stateActive && this.state.stateName !== "All States") {
       const filteredData = SEARCH.filterStates(this.state.stateName, data)
       data = filteredData
@@ -81,17 +69,13 @@ class RestaurantSearch extends Component {
       const filteredData = SEARCH.filterInput(this.state.searchName.toLowerCase(), data)
       data = filteredData
     }
-    //chunk data in groups of 10 and set state
+    //put data in groups of 10 for pagination and set state
     this.chunkData(data)
   }
 
   //go to the next slide
-  nextSlide = event => {
-    console.log("Next stlide")
-    console.log(this.state.pageIndex);
-    console.log(this.state.pageIndex)
+  nextSlide() {
     var slideCount = this.state.pageIndex + 1;
-    console.log(slideCount)
     if (slideCount >= this.state.filteredData.length) {
       this.setState({
         pageIndex: 0
@@ -104,9 +88,7 @@ class RestaurantSearch extends Component {
   };
 
   //go to the previous slide
-  prevSlide = event => {
-    console.log("prev slide")
-    console.log(this.state.pageIndex);
+  prevSlide() {
     var slideCount = this.state.pageIndex - 1;
     if (slideCount < 0) {
       this.setState({
@@ -122,7 +104,6 @@ class RestaurantSearch extends Component {
   //break up data in to groups of ten for pagination
   chunkData(arr) {
     const ten = TOOLS.chunk(arr, 10);
-    // this.setState({ data: res.data})
     this.setState({
       filteredData: ten
     })
@@ -134,12 +115,15 @@ class RestaurantSearch extends Component {
       .then(res => {
         console.log(res);
         const genres = TOOLS.getGenres(res.data)
-        const sortedData = res.data.sort( function(a, b) {
+        const sortedData = res.data.sort(function (a, b) {
           a = a.name.toLowerCase();
           b = b.name.toLowerCase();
           return a < b ? -1 : a > b ? 1 : 0;
         });
-        this.setState({ data: sortedData, genres: genres }, this.chunkData(sortedData))
+        this.setState({
+          data: sortedData,
+          genres: genres
+        }, this.chunkData(sortedData))
       })
       .catch(err => console.log(err));
   }

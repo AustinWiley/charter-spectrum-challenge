@@ -32,6 +32,7 @@ class Table extends Component {
         <tr className={(this.props.index % 2) ? 'dark' : 'light'}>
           <td colSpan='6'>
             <table id='noBorders'>
+              <tbody>
               <tr>
                 <td>Hours:</td>
                 <td>{hours}</td>
@@ -44,6 +45,7 @@ class Table extends Component {
                 <td>Website:</td>
                 <td className="noBorders"><a href={website}>{website}</a></td>
               </tr>
+              </tbody>
             </table>
           </td>
         </tr>

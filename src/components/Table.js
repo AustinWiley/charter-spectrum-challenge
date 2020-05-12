@@ -8,15 +8,17 @@ class Table extends Component {
     return (
       <>
         <table id="restaurants">
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Phone</th>
-            <th>Genres</th>
-          </tr>
-          {this.renderRows()}
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Phone</th>
+              <th>Genres</th>
+            </tr>
+            {this.renderRows()}
+          </tbody>
         </table>
     </>
     );

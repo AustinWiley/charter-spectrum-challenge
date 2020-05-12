@@ -8,10 +8,11 @@ export default {
     }
     return chunks;
   },
+
   getGenres: function (data) {
     //get a list of all genres and get rid of the duplicates
     let newArr = ['All Genres']
-    data.map(item => {
+    data.forEach(function(item) {
       const items = item.genre.split(',')
       newArr = newArr.concat(items)
     })

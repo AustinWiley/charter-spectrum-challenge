@@ -103,7 +103,6 @@ class RestaurantSearch extends Component {
   componentDidMount() {
     API.search()
       .then(res => {
-        console.log(res);
         const genres = TOOLS.getGenres(res.data)
         const sortedData = res.data.sort(function (a, b) {
           a = a.name.toLowerCase();
@@ -155,9 +154,9 @@ class RestaurantSearch extends Component {
         />
         </div>
         <div className="paging">
-          <a className="prev" onClick={this.prevSlide}>&#10094;</a>
+          <a href="#0" className="prev" onClick={this.prevSlide}>&#10094;</a>
           <p>{"Page: " + (parseInt(this.state.pageIndex) + 1)  + " / " + this.state.filteredData.length}</p>
-          <a className="next" onClick={this.nextSlide}>&#10095;</a>
+          <a href="#0" className="next" onClick={this.nextSlide}>&#10095;</a>
         </div>
         <Table data={this.state.filteredData[0] ? this.state.filteredData[this.state.pageIndex] : [] } />
       </div>

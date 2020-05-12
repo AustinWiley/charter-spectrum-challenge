@@ -6,7 +6,6 @@ export default {
   search: function () {
     return (
       axios.get(BASEURL, {
-        //params: query
         headers: {
           Authorization: API_KEY
         }

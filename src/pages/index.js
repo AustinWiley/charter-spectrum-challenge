@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import API from '../utils/API';
 import TOOLS from '../utils/TOOLS';
+import SEARCH from '../utils/SEARCH';
 import Table from '../components/Table';
 import SearchInput from '../components/SearchInput';
 import SearchSelector from '../components/SearchSelect';
@@ -69,13 +70,16 @@ class RestaurantSearch extends Component {
     console.log(this.state)
 
     if (this.state.stateActive && this.state.stateName !== "All States") {
-      //filter by state
+      const filteredData = SEARCH.filterStates(this.state.stateName, data)
+      data = filteredData
     }
     if (this.state.genreActive && this.state.genreName !== "All Genres") {
-      //filter by genre
+      const filteredData = SEARCH.filterGenres(this.state.genreName, data)
+      data = filteredData
     }
     if (this.state.searchActive && this.state.searchName !== "") {
-      //filter by user input
+      const filteredData = SEARCH.filterInput(this.state.searchName.toLowerCase(), data)
+      data = filteredData
     }
     //chunk data in groups of 10 and set state
     this.chunkData(data)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import API from '../utils/API';
+import Table from '../components/Table';
 
 class RestaurantSearch extends Component {
     //set initial state
@@ -41,6 +42,7 @@ class RestaurantSearch extends Component {
         {/* make seach input fields */}
         {/* make pagination buttons */}
         {/* make a table with the data from the API */}
+        <Table data={this.state.data} />
       </div>
     );
   }

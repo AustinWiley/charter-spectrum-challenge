@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 class SearchSelect extends React.Component {
-
     renderOptions () {
         const items = this.props.options.map(item => <option value={item}>{item}</option>)
         return items;

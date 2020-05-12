@@ -74,30 +74,20 @@ class RestaurantSearch extends Component {
   }
 
   //go to the next slide
-  nextSlide() {
-    var slideCount = this.state.pageIndex + 1;
-    if (slideCount >= this.state.filteredData.length) {
-      this.setState({
-        pageIndex: 0
-      })
-    } else if (slideCount <= this.state.filteredData.length - 1) {
-      this.setState({
-        pageIndex: slideCount
-      })
+  nextSlide = event => {
+      var slideCount = this.state.pageIndex + 1;
+      if (slideCount >= this.state.filteredData.length ) {this.setState({ pageIndex: 0})}
+      else if (slideCount <= this.state.filteredData.length -1 ) {this.setState({ pageIndex: slideCount})};
     };
-  };
 
   //go to the previous slide
-  prevSlide() {
+  prevSlide = event => {
     var slideCount = this.state.pageIndex - 1;
     if (slideCount < 0) {
-      this.setState({
-        pageIndex: this.state.filteredData.length - 1
-      })
-    } else if (slideCount <= this.state.filteredData.length) {
-      this.setState({
-        pageIndex: slideCount
-      })
+      this.setState({ pageIndex: this.state.filteredData.length -1})
+    }
+    else if (slideCount <= this.state.filteredData.length) {
+      this.setState({ pageIndex: slideCount})
     };
   };
 
@@ -131,49 +121,46 @@ class RestaurantSearch extends Component {
   render() {
     return (
       <div>
-      <h1>Search Restaurants</h1>
-      {/* make seach input fields */}
-      <div className='searchGroup'>
+        <h1>Search Restaurants</h1>
+        <div className='searchGroup'>
         <SearchInput
-                        title={'Search: '}
-                        checkboxName={'searchActive'}
-                        checkboxValue={this.state.searchActive}
-                        name={'searchName'}
-                        value={this.state.searchName}
-                        placeholder={'(Name, City or Genre)'}
-                        onChange={this.handleInputChange}
-                        onCheckbox={this.handleCheckboxChange}
+          title={'Search: '}
+          checkboxName={'searchActive'}
+          checkboxValue={this.state.searchActive}
+          name={'searchName'}
+          value={this.state.searchName}
+          placeholder={'(Name, City or Genre)'}
+          onChange={this.handleInputChange}
+          onCheckbox={this.handleCheckboxChange}
         />
         <SearchSelector
-                        title={'State: '}
-                        checkboxName={'stateActive'}
-                        checkboxValue={this.state.stateActive}
-                        name={'stateName'}
-                        value={this.state.stateName}
-                        onChange={this.handleInputChange}
-                        onCheckbox={this.handleCheckboxChange}
-                        options={this.state.states}
+          title={'State: '}
+          checkboxName={'stateActive'}
+          checkboxValue={this.state.stateActive}
+          name={'stateName'}
+          value={this.state.stateName}
+          onChange={this.handleInputChange}
+          onCheckbox={this.handleCheckboxChange}
+          options={this.state.states}
         />
         <SearchSelector
-                        title={'Genre: '}
-                        checkboxName={'genreActive'}
-                        checkboxValue={this.state.genreActive}
-                        name={'genreName'}
-                        value={this.state.genreName}
-                        onChange={this.handleInputChange}
-                        onCheckbox={this.handleCheckboxChange}
-                        options={this.state.genres}
+          title={'Genre: '}
+          checkboxName={'genreActive'}
+          checkboxValue={this.state.genreActive}
+          name={'genreName'}
+          value={this.state.genreName}
+          onChange={this.handleInputChange}
+          onCheckbox={this.handleCheckboxChange}
+          options={this.state.genres}
         />
         </div>
-      {/* make pagination buttons */}
-      <div>
-        <a onClick={this.prevSlide}>&#10094;</a>
-        <p>{"Page: " + (parseInt(this.state.pageIndex) + 1)  + " / " + this.state.filteredData.length}</p>
-        <a onClick={this.nextSlide}>&#10095;</a>
+        <div className="paging">
+          <a className="prev" onClick={this.prevSlide}>&#10094;</a>
+          <p>{"Page: " + (parseInt(this.state.pageIndex) + 1)  + " / " + this.state.filteredData.length}</p>
+          <a className="next" onClick={this.nextSlide}>&#10095;</a>
+        </div>
+        <Table data={this.state.filteredData[0] ? this.state.filteredData[this.state.pageIndex] : [] } />
       </div>
-      {/* make a table with the data from the API */}
-      <Table data={this.state.filteredData[0] ? this.state.filteredData[this.state.pageIndex] : [] } />
-    </div>
     );
   }
 }

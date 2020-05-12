@@ -28,7 +28,9 @@ class Table extends Component {
     const items = this.props.data.map((item, index) => {
       return <TableRow key={item.id} restaurantData={item} index={index} />
     })
-    return items;
+    console.log(this.props.data)
+    console.log(items)
+    return (items.length === 0) ? <td colSpan='6'><tr>No Results</tr></td> : items
   }
 }
 

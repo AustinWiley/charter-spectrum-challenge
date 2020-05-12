@@ -54,6 +54,21 @@ class RestaurantSearch extends Component {
     });
   };
 
+  //reset state if reset button is pressed
+  resetSearch = event => {
+    this.setState({
+      pageIndex: 0,
+      searchActive: true,
+      searchName: "",
+      stateActive: true,
+      stateName: "All States",
+      genreActive: true,
+      genreName: "All Genres",
+    }, function () {
+      this.filterData();
+    });
+  };
+
   //filter the data based on user inputs
   filterData() {
     let data = this.state.data
@@ -152,6 +167,7 @@ class RestaurantSearch extends Component {
           onCheckbox={this.handleCheckboxChange}
           options={this.state.genres}
         />
+        <button onClick={this.resetSearch}>Reset Search</button>
         </div>
         <div className="paging">
           <a href="#0" className="prev" onClick={this.prevSlide}>&#10094;</a>

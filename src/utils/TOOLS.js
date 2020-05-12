@@ -8,7 +8,6 @@ export default {
     }
     return chunks;
   },
-
   getGenres: function (data) {
     //get a list of all genres and get rid of the duplicates
     let newArr = ['All Genres']

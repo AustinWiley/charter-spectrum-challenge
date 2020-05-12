@@ -5,7 +5,7 @@ const SearchGroup = props => (
     <label>
       {props.title}
       {props.checkboxValue
-      ? <input type="text" name={props.name} value={props.value} onChange={props.onChange} placeholder={props.placeholder} />
+      ? <input onKeyDown={(e) => {if(e.keyCode === 13) e.preventDefault()}} type="text" name={props.name} value={props.value} onChange={props.onChange} placeholder={props.placeholder} />
       : <></>
       }
     </label>
